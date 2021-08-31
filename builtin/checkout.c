@@ -922,7 +922,7 @@ static void update_refs_for_switch(const struct checkout_opts *opts,
 			   REF_NO_DEREF, UPDATE_REFS_DIE_ON_ERR);
 		if (!opts->quiet) {
 			if (old_branch_info->path &&
-			    advice_detached_head && !opts->force_detach)
+			    advice_enabled(ADVICE_DETACHED_HEAD) && !opts->force_detach)
 				detach_advice(new_branch_info->name);
 			describe_detached_head(_("HEAD is now at"), new_branch_info->commit);
 		}
@@ -1015,7 +1015,7 @@ static void suggest_reattach(struct commit *commit, struct rev_info *revs)
 		sb.buf);
 	strbuf_release(&sb);
 
-	if (advice_detached_head)
+	if (advice_enabled(ADVICE_DETACHED_HEAD))
 		fprintf(stderr,
 			Q_(
 			/* The singular version */
@@ -1186,7 +1186,7 @@ static const char *parse_remote_branch(const char *arg,
 	}
 
 	if (!remote && num_matches > 1) {
-	    if (advice_checkout_ambiguous_remote_branch_name) {
+	    if (advice_enabled(ADVICE_CHECKOUT_AMBIGUOUS_REMOTE_BRANCH_NAME)) {
 		    advise(_("If you meant to check out a remote tracking branch on, e.g. 'origin',\n"
 			     "you can do so by fully qualifying the name with the --track option:\n"
 			     "\n"
